@@ -74,12 +74,13 @@ char ch;
 char* rwtab[] = {"begin", "if", "then", "while", "do", "end", _KEY_WORD_END};
 
 // lexical sanner function
-WORD* scaner();
+WORD* scanner();
 
 void main(){
 	
 	int over = 1;
-	WORD* oneword = new WORD;
+	//WORD* oneword = new WORD;
+	WORD* oneword = NULL;
 	printf("Enter Your words(end with #))");
 	// read the source code into buffer , end with # , multiline is avaliable
 	scanf("%[^#]s", input);		
@@ -110,7 +111,7 @@ char m_getch(){
 	return (ch);
 }
 
-// split empty symbol
+// ignore the empty symbol before a word
 void getbc(){
 	while(ch ==' ' || ch == 10){
 		ch = input[p_input];
@@ -159,3 +160,162 @@ void retract(){
 char* dtb(){
 	return NULL;
 }
+
+WORD* scanner(){
+	// TODO allocate room for a new WORD
+	// allocate char room while need
+	WORD* myword = (WORD*)malloc(sizeof(WORD));
+
+	myword->typenum = 10;
+	myword->word = "";
+	p_token = 0;
+	m_getch();
+	getbc();
+
+	if(letter()){
+		while(letter() || digit()){
+			concat();
+			m_getch();
+		}
+		retract();
+		myword->typenum = reserve();
+		myword->word = token;
+		return(myword);
+	}else if(digit()){
+		while(digit()){
+			concat();
+			m_getch();
+		}
+		retract();
+		myword->typenum = 20;
+		myword->word = token;
+		return(myword);
+	}else switch(ch){
+		case '=' : m_getch();
+				   if(ch == '='){
+					   myword->typenum = 39;
+					   myword->word = "==";
+					   return (myword);
+				   }
+				   retract();
+				   myword->typenum = 21;
+				   myword->word = "="; 
+				   return(myword);
+				   break;
+		case '+' : myword->typenum = 22;
+				   myword->word = "+";
+				   return(myword);
+				   break;
+		case '-' :
+				   myword->typenum = 23;
+				   myword->word = "=";
+			   	   return(myword);	   
+			   	   break;
+		case '*':
+				   myword->typenum = 24;
+				   myword->word = "*";
+			   	   return(myword);
+			   	   break;
+		case '/':
+				   myword->typenum = 25;
+				   myword->word = "/";
+			       	   return(myword);
+			   	   break;
+	
+		case '(':
+				   myword->typenum = 26;
+				   myword->word = "(";
+				   return(myword);
+				   break;
+		case ')':
+				   myword->typenum = 27;
+				   myword->word = ")";
+				   return(myword);
+				   break;
+		case '[':
+				   myword->typenum = 28;
+				   myword->word = "[";
+				   return(myword);
+				   break;
+		case ']':
+				   myword->typenum = 29;
+				   myword->word = "]";
+				   return(myword);
+				   break;
+		case '{':
+				   myword->typenum = 30;
+				   myword->word = "{";
+				   return(myword);
+				   break;
+		case '}':
+				   myword->typenum = 31;
+				   myword->word = "}";
+				   return(myword);
+				   break;
+		case ',':
+				   myword->typenum = 32;
+				   myword->word = ",";
+				   return(myword);
+				   break;
+		case ':':
+				   myword->typenum = 33;
+				   myword->word = ":";
+				   return(myword);
+				   break;
+		case ';':
+				   myword->typenum = 34;
+				   myword->word = ";";
+				   return(myword);
+				   break;
+		case '>':
+				   m_getch();
+				   if(ch == '='){
+					   myword->typenum = 37;
+					   myword->word = ">=";
+					   return(myword);
+				   }
+				   retract();
+				   myword->typenum = 35;
+				   myword->word = ">";
+				   return(myword);
+				   break;
+		case '<':
+				   m_getch();
+				   if(ch == '='){
+					   myword->typenum = 37;
+					   myword->word = "<=";
+					   return(myword);
+				   }
+				   retract();
+				   myword->typenum = 36;
+				   myword->word = "<";
+				   return(myword);
+				   break;
+		case '!':
+				   m_getch();
+				   if(ch == '='){
+					   myword->typenum = 40;
+					   myword->word = "<";
+					   return(myword);
+				   }
+				   retract();
+				   myword->typenum = -1;
+				   myword->word = "ERROR";
+				   return(myword);
+				   break;
+		case '\0':
+				   myword->typenum = 1000;
+				   myword->word = "OVER";
+				   return(myword);
+				   break;
+		default:
+				   myword->typenum = -1;
+				   myword->word = "ERROR";
+				   return(myword);
+				   break;
+		
+	}
+
+}
+
+

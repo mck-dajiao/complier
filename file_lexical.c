@@ -90,7 +90,7 @@ void main(){
 	int over = 1;
 	WORD* oneword = NULL;
 	// output stream pointer
-	stream = fopen("e:\\codeblockoutput.txt", "w+");
+	stream = fopen("e:\\newoutput.txt", "w+");
 	//WORD* oneword = new WORD;
 	printf("Enter Your words(end with #))");
 	// read the source code into buffer , end with # , multiline is avaliable
@@ -202,7 +202,7 @@ WORD* scanner(){
 			m_getch();
 		}
 		retract();
-		myword->typenum = 20;
+		myword->typenum = 11;
 		myword->word = token;
 		return(myword);
 	}else switch(ch){
@@ -213,96 +213,112 @@ WORD* scanner(){
 					   return (myword);
 				   }
 				   retract();
-				   myword->typenum = 21;
+				   myword->typenum = 25;
 				   myword->word = "="; 
 				   return(myword);
 				   break;
-		case '+' : myword->typenum = 22;
+		case '+' : myword->typenum = 13;
 				   myword->word = "+";
 				   return(myword);
 				   break;
 		case '-' :
-				   myword->typenum = 23;
+				   myword->typenum = 14;
 				   myword->word = "=";
 			   	   return(myword);	   
 			   	   break;
 		case '*':
-				   myword->typenum = 24;
+				   myword->typenum = 15;
 				   myword->word = "*";
 			   	   return(myword);
 			   	   break;
 		case '/':
-				   myword->typenum = 25;
+				   myword->typenum = 16;
 				   myword->word = "/";
 			       	   return(myword);
 			   	   break;
 	
 		case '(':
-				   myword->typenum = 26;
+				   myword->typenum = 27;
 				   myword->word = "(";
 				   return(myword);
 				   break;
 		case ')':
-				   myword->typenum = 27;
+				   myword->typenum = 28;
 				   myword->word = ")";
 				   return(myword);
 				   break;
+				   //TODO
 		case '[':
-				   myword->typenum = 28;
+				   myword->typenum = 30;
 				   myword->word = "[";
 				   return(myword);
 				   break;
+				   //TODO
 		case ']':
-				   myword->typenum = 29;
+				   myword->typenum = 31;
 				   myword->word = "]";
 				   return(myword);
 				   break;
+				   //TODO
 		case '{':
-				   myword->typenum = 30;
+				   myword->typenum = 32;
 				   myword->word = "{";
 				   return(myword);
 				   break;
+				   //TODO
 		case '}':
-				   myword->typenum = 31;
+				   myword->typenum = 33;
 				   myword->word = "}";
 				   return(myword);
 				   break;
+				   //TODO
 		case ',':
-				   myword->typenum = 32;
+				   myword->typenum = 34;
 				   myword->word = ",";
 				   return(myword);
 				   break;
 		case ':':
-				   myword->typenum = 33;
+				   m_getch();
+				   if(ch == '='){
+				   	myword->typenum = 18;
+					myword->word = ":=";
+					return (myword);
+				   }
+				   retract();
+				   myword->typenum = 17;
 				   myword->word = ":";
 				   return(myword);
 				   break;
 		case ';':
-				   myword->typenum = 34;
+				   myword->typenum = 26;
 				   myword->word = ";";
 				   return(myword);
 				   break;
 		case '>':
 				   m_getch();
 				   if(ch == '='){
-					   myword->typenum = 37;
+					   myword->typenum = 24;
 					   myword->word = ">=";
 					   return(myword);
 				   }
 				   retract();
-				   myword->typenum = 35;
+				   myword->typenum = 23;
 				   myword->word = ">";
 				   return(myword);
 				   break;
 		case '<':
 				   m_getch();
 				   if(ch == '='){
-					   myword->typenum = 37;
+					   myword->typenum = 22;
 					   myword->word = "<=";
+					   return(myword);
+				   }else if(ch == '>'){
+					   myword->typenum = 21;
+					   myword->word = "<>";
 					   return(myword);
 				   }
 				   retract();
-				   myword->typenum = 36;
+				   myword->typenum = 20;
 				   myword->word = "<";
 				   return(myword);
 				   break;
@@ -323,6 +339,10 @@ WORD* scanner(){
 				   myword->word = "OVER";
 				   return(myword);
 				   break;
+		case '#':	
+				   myword->typenum = 0;
+				   myword->word = "#";
+				   return(myword);
 		default:
 				   myword->typenum = -1;
 				   myword->word = "ERROR";
